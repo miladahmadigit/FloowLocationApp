@@ -139,7 +139,6 @@ public class RecordLocations
         {
             do
             {
-                // Passing values
                 Journey journey = new Journey();
                 journey.setPK_Journey(c.getInt(c.getColumnIndex(column_PK_Journey)));
                 journey.setNameOfJourney(c.getString(c.getColumnIndex(column_nameOfJourney)));
