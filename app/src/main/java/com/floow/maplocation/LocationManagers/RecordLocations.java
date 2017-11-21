@@ -153,7 +153,6 @@ public class RecordLocations
         c.close();
         db.close();
         iRecordLocation.journeyListBackFromRecordLocation(listOfJourneys);
-
     }
 
 
