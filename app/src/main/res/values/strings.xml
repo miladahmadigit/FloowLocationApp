@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MapLocation</string>
+    <string name="APIKey">AIzaSyAyC-Y7XGLi0TMYlXL0WHnl0OUgdcc6050</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="your_current_location">Get current location AND update location</string>
+    <string name="update_Location">Update your Location</string>
+    <string name="track_on_or_off">Track On/Off</string>
+    <string name="display_your_path">Display path on map</string>
+    <string name="show_Journey_list">Show Journeys list</string>
+</resources>

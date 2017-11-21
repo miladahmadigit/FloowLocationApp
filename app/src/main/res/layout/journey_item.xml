@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/rlJourneyItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/journeyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="test"
+            android:gravity="center"
+            android:textSize="@dimen/buttonTextSize"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/journeyStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="false"
+            android:text="test"
+            android:gravity="center"
+            android:focusable="false"
+            android:textSize="@dimen/buttonTextSize"/>
+
+        <TextView
+            android:id="@+id/journeyEndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:text="test"
+            android:textSize="@dimen/buttonTextSize"/>
+    </LinearLayout>
+
+</LinearLayout>
