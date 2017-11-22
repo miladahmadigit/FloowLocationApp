@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     private Marker marker1 = null;
     private List<Polyline> lines = new ArrayList<>();
     public GoogleMap googleMapInstance;
-    public GoogleApiClient googleApiClient = null;
 
     /**
      * present classes
@@ -90,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         initViews();
 
         initMap();
-
-        initGoogleApiClient();
 
         SharedPreferencesManager.initSharedPreferences(this);
 
@@ -149,36 +146,6 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         }
     }
 
-    @SuppressLint("MissingPermission")
-    public void initGoogleApiClient()
-    {
-        googleApiClient = new GoogleApiClient.Builder(MainActivity.this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks()
-                {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle)
-                    {
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i)
-                    {
-
-                    }
-                })
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener()
-                {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-                    {
-
-                    }
-                })
-                .build();
-        googleApiClient.connect();
-
-    }
 
     //----------------------------------------------------------------------------------------------
     /**
@@ -254,10 +221,13 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     @Override
     public void moveToLocation(CameraUpdate updatePosition, MarkerOptions markerOptions)
     {
-        googleMapInstance.moveCamera(updatePosition);
-        if (markerOptions != null)
+        if(googleMapInstance!=null)
         {
-            marker1 = googleMapInstance.addMarker(markerOptions);
+            googleMapInstance.moveCamera(updatePosition);
+            if (markerOptions != null)
+            {
+                marker1 = googleMapInstance.addMarker(markerOptions);
+            }
         }
     }
 
@@ -281,7 +251,10 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     @Override
     public void drawLine(PolylineOptions polylineOptions)
     {
-        lines.add(googleMapInstance.addPolyline(polylineOptions));
+        if(googleMapInstance!=null)
+        {
+            lines.add(googleMapInstance.addPolyline(polylineOptions));
+        }
     }
 
     /**
@@ -318,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     protected void onResume()
     {
         super.onResume();
+        manageLocation.getLastLocation(defaultZoom, true);
     }
 
     @Override
@@ -326,9 +300,21 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         super.onStop();
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onPause()
     {
         super.onPause();
+        if(!manageLocation.enableRecording && googleMapInstance!=null)
+        {
+            manageLocation.removeLocationRequester();
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        manageLocation.closeDB();
     }
 }

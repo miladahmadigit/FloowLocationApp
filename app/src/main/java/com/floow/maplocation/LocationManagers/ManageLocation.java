@@ -40,7 +40,7 @@ public class ManageLocation implements IRecordLocation
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private Location firstLocation = null;
-    private boolean enableRecording = false;
+    public boolean enableRecording = false;
     private boolean enableDisplayPath = false;
 
     public ManageLocation(IManageLocation iLocationInterface_)
@@ -189,6 +189,10 @@ public class ManageLocation implements IRecordLocation
     public void removeLocationRequester()
     {
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+
+        mLocationCallback=null;
+        mLocationRequest=null;
+        mFusedLocationClient=null;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -204,7 +208,6 @@ public class ManageLocation implements IRecordLocation
     {
         enableRecording = false;
         recordLocations.updateJourney();
-        recordLocations.close();
     }
 
     public void displayPath()
@@ -220,8 +223,11 @@ public class ManageLocation implements IRecordLocation
 
     public void getAllJourneys()
     {
-        recordLocations.open();
         recordLocations.getListOfjourneys();
+    }
+
+    public void closeDB()
+    {
         recordLocations.close();
     }
 
@@ -232,5 +238,7 @@ public class ManageLocation implements IRecordLocation
         JourneyAdapter journeyAdapter = new JourneyAdapter(activity, journeyList);
         iLocationInterface.showJourneys(journeyAdapter);
     }
+
+
 
 }

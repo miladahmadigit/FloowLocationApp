@@ -76,6 +76,10 @@ public class RecordLocations
 
     public void insertLocationItem(double lat, double lng)
     {
+        if(!db.isOpen())
+        {
+            open();
+        }
         ContentValues newValues = new ContentValues();
         newValues.put(column_FK_Journey, maxPrimaryKeyOfJourney);
         newValues.put(column_lat, lat);
@@ -85,6 +89,10 @@ public class RecordLocations
 
     public void insertJourney(int zoom)
     {
+        if(!db.isOpen())
+        {
+            open();
+        }
         String startTimeOfJourney = DateFormat.getTimeInstance().format(new Date());
         maxPrimaryKeyOfJourney = Integer.parseInt(maxNumber(column_PK_Journey, JourneyTableName));
         ContentValues newValues = new ContentValues();
@@ -162,10 +170,10 @@ public class RecordLocations
      * @return
      * @throws SQLException
      */
-    public RecordLocations open() throws SQLException
+    public void open() throws SQLException
     {
         db = dbHelper.getWritableDatabase();
-        return this;
+//        return this;
     }
 
     /**
