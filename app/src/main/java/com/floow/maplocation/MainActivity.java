@@ -38,11 +38,12 @@ import java.util.List;
 import static com.floow.maplocation.Constants.MapConst.defaultZoom;
 
 public class MainActivity extends AppCompatActivity implements IPermission, IManageLocation
+        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     private Marker marker1 = null;
     private List<Polyline> lines = new ArrayList<>();
     public GoogleMap googleMapInstance;
-
+    private GoogleApiClient mGoogleApiClient;
     /**
      * present classes
      */
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
      */
     private ListView lvJourneyList = null;
     private SupportMapFragment mapFragment = null;
-    private Button btnGetCurrentLocationAndUpdate, btnShowJourneyList;
+    private Button  btnShowJourneyList;
     private Switch swTrackOnOff, swDisplayPath;
 
     @Override
@@ -88,11 +89,16 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
          */
         initViews();
 
+        //buildGoogleApiClient();
+
         initMap();
 
         SharedPreferencesManager.initSharedPreferences(this);
 
         manageLocation = new ManageLocation(this);
+
+        manageLocation.getLastLocation(defaultZoom, true);
+
     }
 
     /**
@@ -113,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     {
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.frShowMap);
 
-        btnGetCurrentLocationAndUpdate = findViewById(R.id.btnGetCurrentLocationAndUpdate);
-        btnGetCurrentLocationAndUpdate.setOnClickListener(ClickListener);
         btnShowJourneyList = findViewById(R.id.btnShowJourneyList);
         btnShowJourneyList.setOnClickListener(ClickListener);
 
@@ -127,7 +131,14 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         lvJourneyList = findViewById(R.id.lvJourneyList);
     }
 
-
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
     /**
      * fill map variable
      */
@@ -158,11 +169,6 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         {
             switch (v.getId())
             {
-                case R.id.btnGetCurrentLocationAndUpdate:
-                {
-                    manageLocation.getLastLocation(defaultZoom, true);
-                    break;
-                }
                 case R.id.btnShowJourneyList:
                 {
                     manageLocation.getAllJourneys();
@@ -285,19 +291,25 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     protected void onStart()
     {
         super.onStart();
+        if(manageLocation!=null && manageLocation.mFusedLocationClient==null)
+            manageLocation.getLastLocation(defaultZoom, true);
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        manageLocation.getLastLocation(defaultZoom, true);
+
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
+        if(manageLocation!=null && !manageLocation.enableRecording )
+        {
+            manageLocation.removeLocationRequester();
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -305,10 +317,7 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     protected void onPause()
     {
         super.onPause();
-        if(!manageLocation.enableRecording && googleMapInstance!=null)
-        {
-            manageLocation.removeLocationRequester();
-        }
+
     }
 
     @Override
@@ -316,5 +325,22 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     {
         super.onDestroy();
         manageLocation.closeDB();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle)
+    {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+
     }
 }

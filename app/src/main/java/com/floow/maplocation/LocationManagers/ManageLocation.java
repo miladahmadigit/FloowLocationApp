@@ -3,6 +3,7 @@ package com.floow.maplocation.LocationManagers;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.location.Location;
+import android.os.Looper;
 import android.util.Log;
 
 import com.floow.maplocation.Adapters.JourneyAdapter;
@@ -37,11 +38,11 @@ public class ManageLocation implements IRecordLocation
     private RecordLocations recordLocations;
     private Activity activity = null;
     private LocationCallback mLocationCallback;
-    private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private Location firstLocation = null;
     public boolean enableRecording = false;
     private boolean enableDisplayPath = false;
+    public FusedLocationProviderClient mFusedLocationClient;
 
     public ManageLocation(IManageLocation iLocationInterface_)
     {
@@ -189,10 +190,9 @@ public class ManageLocation implements IRecordLocation
     public void removeLocationRequester()
     {
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-
         mLocationCallback=null;
-        mLocationRequest=null;
         mFusedLocationClient=null;
+        mLocationRequest=null;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -238,7 +238,6 @@ public class ManageLocation implements IRecordLocation
         JourneyAdapter journeyAdapter = new JourneyAdapter(activity, journeyList);
         iLocationInterface.showJourneys(journeyAdapter);
     }
-
 
 
 }

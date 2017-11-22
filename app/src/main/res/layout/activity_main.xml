@@ -18,23 +18,22 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnGetCurrentLocationAndUpdate"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/buttonTextSize"
-                android:layout_margin="@dimen/marginButton"
-                android:text="@string/your_current_location"/>
-
             <Switch
                 android:id="@+id/swDisplayPath"
-                android:text="@string/display_your_path"
-                android:textSize="@dimen/buttonTextSize"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/marginButton"
-                android:layout_height="wrap_content"/>
+                android:layout_weight="1"
+                android:text="@string/display_your_path"
+                android:textSize="@dimen/buttonTextSize"/>
+            <Switch
+                android:id="@+id/swTrackOnOff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/marginButton"
+                android:layout_weight="1"
+                android:text="@string/track_on_or_off"
+                android:textSize="@dimen/buttonTextSize"/>
 
         </LinearLayout>
 
@@ -45,23 +44,14 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-          <Switch
-              android:id="@+id/swTrackOnOff"
-              android:text="@string/track_on_or_off"
-              android:textSize="@dimen/buttonTextSize"
-              android:layout_width="0dp"
-              android:layout_weight="1"
-              android:layout_margin="@dimen/marginButton"
-              android:layout_height="wrap_content"/>
-
             <Button
                 android:id="@+id/btnShowJourneyList"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/marginButton"
-                android:textSize="@dimen/buttonTextSize"
-                android:text="@string/show_Journey_list"/>
+                android:layout_weight="1"
+                android:text="@string/show_Journey_list"
+                android:textSize="@dimen/buttonTextSize"/>
 
         </LinearLayout>
 
@@ -77,15 +67,15 @@
             android:id="@+id/frShowMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="match_parent"
+            android:layout_weight="5"
             tools:context="com.floow.maplocation.MapsActivity"/>
 
         <ListView
             android:id="@+id/lvJourneyList"
             android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
 
     </LinearLayout>
 
