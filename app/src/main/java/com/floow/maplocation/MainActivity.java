@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -38,7 +39,6 @@ import java.util.List;
 import static com.floow.maplocation.Constants.MapConst.defaultZoom;
 
 public class MainActivity extends AppCompatActivity implements IPermission, IManageLocation
-        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     private Marker marker1 = null;
     private List<Polyline> lines = new ArrayList<>();
@@ -131,14 +131,14 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         lvJourneyList = findViewById(R.id.lvJourneyList);
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
+//    protected synchronized void buildGoogleApiClient() {
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API)
+//                .build();
+//        mGoogleApiClient.connect();
+//    }
     /**
      * fill map variable
      */
@@ -259,6 +259,8 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
     {
         if(googleMapInstance!=null)
         {
+            Log.d("drawLine",""+polylineOptions.getPoints().get(0).latitude+"--"+polylineOptions.getPoints().get(0).longitude);
+
             lines.add(googleMapInstance.addPolyline(polylineOptions));
         }
     }
@@ -327,20 +329,4 @@ public class MainActivity extends AppCompatActivity implements IPermission, IMan
         manageLocation.closeDB();
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle)
-    {
-    }
-
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-    {
-
-    }
 }

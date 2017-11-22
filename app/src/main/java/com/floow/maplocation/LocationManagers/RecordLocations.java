@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.floow.maplocation.DatabaseManagers.DataBaseHelper;
 import com.floow.maplocation.Model.Journey;
@@ -76,23 +77,18 @@ public class RecordLocations
 
     public void insertLocationItem(double lat, double lng)
     {
-        if(!db.isOpen())
-        {
-            open();
-        }
         ContentValues newValues = new ContentValues();
         newValues.put(column_FK_Journey, maxPrimaryKeyOfJourney);
         newValues.put(column_lat, lat);
         newValues.put(column_lng, lng);
         db.insert(LocationItemTableName, null, newValues);
+
+
     }
 
     public void insertJourney(int zoom)
     {
-        if(!db.isOpen())
-        {
-            open();
-        }
+
         String startTimeOfJourney = DateFormat.getTimeInstance().format(new Date());
         maxPrimaryKeyOfJourney = Integer.parseInt(maxNumber(column_PK_Journey, JourneyTableName));
         ContentValues newValues = new ContentValues();
@@ -159,7 +155,6 @@ public class RecordLocations
             while (c.moveToNext());
         }
         c.close();
-        db.close();
         iRecordLocation.journeyListBackFromRecordLocation(listOfJourneys);
     }
 

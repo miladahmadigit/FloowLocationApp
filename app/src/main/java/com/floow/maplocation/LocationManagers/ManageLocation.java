@@ -185,7 +185,7 @@ public class ManageLocation implements IRecordLocation
     }
 
     /**
-     * remove location requester
+     * remove location updater
      */
     public void removeLocationRequester()
     {
